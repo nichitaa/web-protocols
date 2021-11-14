@@ -1,8 +1,8 @@
 import {Router} from 'express';
 import {DefaultController} from '../controllers';
-import {ApiRouter} from './interfaces';
+import {AppRouter} from './interfaces';
 
-export class DefaultRouter implements ApiRouter {
+export class DefaultRouter implements AppRouter {
     private readonly router: Router;
 
     public constructor(private defaultController: DefaultController) {
@@ -10,7 +10,7 @@ export class DefaultRouter implements ApiRouter {
         this.initRoutes();
     }
 
-    private initRoutes(): void {
+    initRoutes = (): void => {
         this.router.get('/', this.defaultController.get);
         this.router.post('/', this.defaultController.post);
     }
