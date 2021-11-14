@@ -17,7 +17,7 @@ export enum PROTOCOL_ENUM {
  * @param opts Configuration object for node https server
  * @returns server - TCP server that will proxy the request to relevant HTTP implementation directly
  */
-export const createServer = (app: Express, opts: https.ServerOptions) => {
+export const createApiServer = (app: Express, opts: https.ServerOptions) => {
 
     let httpProxy = http.createServer(app);
     let httpsProxy = https.createServer(opts, app);
