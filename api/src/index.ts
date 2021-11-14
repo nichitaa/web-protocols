@@ -4,16 +4,18 @@
 
 import express from 'express';
 import cors from 'cors';
-import {createServer} from './createServer';
+import {createApiServer} from './createApiServer';
 import fs from 'fs';
 import path from 'path';
 import * as https from 'https';
 import {routes} from './routes';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export class App {
     private readonly app: express.Express;
-    private PORT = 8080;
-    private server;
+    private apiServer;
 
     public constructor() {
         this.app = express();
@@ -41,11 +43,11 @@ export class App {
             key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
             cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
         };
-        this.server = createServer(this.app, httpsConfig);
+        this.apiServer = createApiServer(this.app, httpsConfig);
     }
 
     public listen() {
-        this.server.listen(this.PORT, () => console.log('Server started'));
+        this.apiServer.listen((process.env.API_PORT as string), () => console.log(`Api Server available on port: ${process.env.API_PORT}...`));
     }
 
 }

@@ -4,11 +4,11 @@
 
 import {App} from './src';
 
-class Server {
-    public static run(): void {
+class APIServer {
+    public static run() {
         const app = new App();
         app.listen();
     }
 }
 
-Server.run();
+APIServer.run();
