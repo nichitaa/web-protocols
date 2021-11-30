@@ -27,9 +27,14 @@ export class FtpRouter implements AppRouter {
     }
 
     initRoutes = (): void => {
-        this.router.get('/ftp-api', this.ftpController.list.bind(this.ftpController));
-        this.router.get('/ftp-api/download/:path(*)', this.ftpController.download.bind(this.ftpController));
-        this.router.post('/ftp-api/upload', this.upload.single('file'), this.ftpController.upload.bind(this.ftpController));
+        // files
+        this.router.get('/ftp-api/download/:path(*)', this.ftpController.download);
+        this.router.post('/ftp-api/upload/:path(*)', this.upload.single('file'), this.ftpController.upload);
+        this.router.delete('/ftp-api/delete/:path(*)', this.ftpController.delete);
+        this.router.get('/ftp-api/:path(*)', this.ftpController.list);
+        // directories
+        this.router.post('/ftp-api/mkdir/:path(*)', this.ftpController.mkdir);
+        this.router.delete('/ftp-api/rmdir/:path(*)', this.ftpController.rmdir);
     };
 
     public get Router(): Router {
