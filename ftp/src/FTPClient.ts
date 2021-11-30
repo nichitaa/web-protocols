@@ -12,13 +12,13 @@ export default class FTPClient {
     }
 
     /**
-     * List the content of the FTP server path
+     * List the content from the specified path on FTP server
      * @param req
      * @param res
      * @param next
      */
     public list(req: Request, res: Response, next: NextFunction) {
-        this.client.list((err, list) => {
+        this.client.list(req.params.path, (err, list) => {
             try {
                 if (err) throw err;
                 return res.json({isSuccess: true, data: list});
@@ -29,7 +29,7 @@ export default class FTPClient {
     }
 
     /**
-     * Responses with the file stream of the requested FTP server path
+     * Responses with the file stream of the requested FTP server file for a specified path
      * @param req
      * @param res
      * @param next
@@ -48,16 +48,16 @@ export default class FTPClient {
     }
 
     /**
-     * Uploads the file from previously saved multer temporary location directly to the FTP server
+     * Uploads the file from previously saved multer temporary location directly to a specified FTP server path
      * @param req
      * @param res
      * @param next
      */
     public upload(req: Request, res: Response, next: NextFunction) {
-        try {
-            // path to temporary multer api storage
-            const tempPath = path.resolve(__dirname, `../temp/${req.file?.originalname}`);
-            this.client.put(fs.createReadStream(tempPath), req.file!.originalname, err => {
+        // path to temporary multer api storage
+        const tempPath = path.resolve(__dirname, `../temp/${req.file?.originalname}`);
+        this.client.put(fs.createReadStream(tempPath), `${req.params.path}/${req.file!.originalname}`, err => {
+            try {
                 if (err) throw err;
                 // delete temporary file as it is already saved on our FTP server
                 fs.unlinkSync(tempPath);
@@ -65,10 +65,71 @@ export default class FTPClient {
                     isSuccess: true,
                     message: `file: ${req.file?.originalname} successfully uploaded to FTP server!`
                 });
-            });
-        } catch (error) {
-            res.send({isSuccess: false, error: error.message});
-        }
+            } catch (error) {
+                res.send({isSuccess: false, error: error.message});
+            }
+        });
+    }
+
+    /**
+     * Deletes a file from the specified path
+     * @param req
+     * @param res
+     * @param next
+     */
+    public delete(req: Request, res: Response, next: NextFunction) {
+        this.client.delete(req.params.path, (err) => {
+            try {
+                if (err) throw err;
+                res.send({
+                    isSuccess: true,
+                    message: `file: ${req.params.path} was successfully deleted!`
+                });
+            } catch (error) {
+                res.send({isSuccess: false, error: error.message});
+            }
+        });
+    }
+
+    /**
+     * Creates a directory
+     * @param req
+     * @param res
+     * @param next
+     */
+    public mkdir(req: Request, res: Response, next: NextFunction) {
+        this.client.mkdir(req.params.path, true, (err) => {
+            try {
+                if (err) throw err;
+                res.send({
+                    isSuccess: true,
+                    message: `directory ${req.params.path} was successfully created!`
+                });
+            } catch (error) {
+                res.send({isSuccess: false, error: error.message});
+            }
+        });
+
+    }
+
+    /**
+     * Deletes a directory if empty
+     * @param req
+     * @param res
+     * @param next
+     */
+    public rmdir(req: Request, res: Response, next: NextFunction) {
+        this.client.rmdir(req.params.path, false, (err) => {
+            try {
+                if (err) throw err;
+                res.send({
+                    isSuccess: true,
+                    message: `directory ${req.params.path} was successfully deleted!`
+                });
+            } catch (error) {
+                res.send({isSuccess: false, error: error.message});
+            }
+        });
     }
 
 }
