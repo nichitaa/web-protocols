@@ -4,15 +4,13 @@
 
 
 
-TCP server that will proxy the incoming request on HTTP or HTTPS implementation (same express application).
+TCP server that will redirect proxy the incoming request on HTTP or HTTPS implementation (https app - api for ftp manipulations, see the postman colection, http app - will proxy the requests to the htpps api)
 
 FTP server that will serve the directory `ftp/srv`. 
 
-Requests on endpoints `https://localhost:8080/ftp-api` will be handled by the express application `FtpController`, that internally uses `FTPClient` commands.
+ `FtpController`, that internally uses `FTPClient` commands.
 
-
-
-
+[swagger api documentation](https://app.swaggerhub.com/apis-docs/nichitaa/PR-web-protocols-API/1.1)
 
 
 
