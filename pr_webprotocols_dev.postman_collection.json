@@ -1,0 +1,783 @@
+{
+	"info": {
+		"_postman_id": "472c87fa-4a9b-4a47-890f-143287ce07b5",
+		"name": "PR-DEV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "protocols",
+			"item": [
+				{
+					"name": "download file",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8080/ftp-api/download?path=readme.md",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api",
+								"download"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "readme.md"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "download file",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/download?path=readme.md",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"download"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "readme.md"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "raw",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "content-type",
+									"value": "some/type"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:49:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "Our FTP server is serving the content of this `srv` directory.\r\n\r\nThe `ftp-api` endpoints are communicating with these files via FTPClient."
+						}
+					]
+				},
+				{
+					"name": "upload file",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://localhost:8080/ftp-api/upload?path=test/test",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "test/test"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "upload file",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/upload?path=test/test",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"upload"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test/test"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "93"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5d-99p8LD9I8YDZdxgUMmHCPIhbhc8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:38:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"file: SAW_BrowserLogs.txt successfully uploaded to FTP server!\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete file",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8080/ftp-api/delete?path=test/test/SAW_BrowserLogs.txt",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "test/test/SAW_BrowserLogs.txt"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete file",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/delete?path=test/test/SAW_BrowserLogs.txt",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test/test/SAW_BrowserLogs.txt"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "72"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"48-wCRhQsqD+obdGnDwf8DdYAtGaOY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:39:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"file: undefined was successfully deleted!\"\n}"
+						}
+					]
+				},
+				{
+					"name": "list directory files and folders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8080/ftp-api?path=test",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make directory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://localhost:8080/ftp-api/mkdir?path=test/test/test",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api",
+								"mkdir"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "test/test/test"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "make directory",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/mkdir?path=test/test",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"mkdir"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test/test"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4c-zpq10RIXgSAlVbRFHdROOh/UMgc\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:40:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"directory undefined was successfully created!\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete direcotry",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://localhost:8080/ftp-api/rmdir?path=test/test/test",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api",
+								"rmdir"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "test/test/test"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete direcotry",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/rmdir?path=test/test",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"rmdir"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test/test"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "132"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"84-Nnpx2Ce220pHO/JO2DNVgpaxgps\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:39:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": false,\n    \"error\": \"ENOENT: no such file or directory, stat 'C:\\\\4. Univer\\\\PR\\\\Lab-1-Protocols\\\\api\\\\ftp\\\\srv\\\\undefined'\"\n}"
+						},
+						{
+							"name": "delete direcotry",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/rmdir?path=test",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"rmdir"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "125"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"7d-zvGLxojOVyPRhPFYjVI1ZNpLG2E\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:41:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": false,\n    \"error\": \"ENOTEMPTY: directory not empty, rmdir 'C:\\\\4. Univer\\\\PR\\\\Lab-1-Protocols\\\\api\\\\ftp\\\\srv\\\\test'\"\n}"
+						},
+						{
+							"name": "delete direcotry",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/NichitaPasecinic-JG/Downloads/SAW_BrowserLogs.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://localhost:8080/ftp-api/rmdir?path=test/test/test",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api",
+										"rmdir"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test/test/test"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4c-LTMGL/jzIT4FzkNKPGcV3umPV5I\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Nov 2021 17:41:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"message\": \"directory undefined was successfully deleted!\"\n}"
+						}
+					]
+				},
+				{
+					"name": "HTTP example",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ftp-api?path=test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ftp-api"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "HTTP example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/ftp-api?path=test",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ftp-api"
+									],
+									"query": [
+										{
+											"key": "path",
+											"value": "test"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "197"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"c5-/5GmrLI6QoMZ5oY1Q/LeYmKnzhg\""
+								},
+								{
+									"key": "date",
+									"value": "Tue, 30 Nov 2021 17:42:45 GMT"
+								},
+								{
+									"key": "connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"isSuccess\": true,\n    \"data\": [\n        {\n            \"type\": \"d\",\n            \"name\": \"test\",\n            \"sticky\": false,\n            \"rights\": {\n                \"user\": \"rw\",\n                \"group\": \"rw\",\n                \"other\": \"rw\"\n            },\n            \"acl\": false,\n            \"owner\": \"1\",\n            \"group\": \"1\",\n            \"size\": 0,\n            \"date\": \"2021-11-30T15:41:00.000Z\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
