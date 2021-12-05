@@ -1,7 +1,7 @@
-import {AppRouter} from './interfaces';
+import FtpController from '../controllers/ftp/ftp.controller';
+import {AppRouter} from '../types';
 import {Router} from 'express';
 import multer from 'multer';
-import FtpController from '../controllers/ftp/ftp.controller';
 import path from 'path';
 
 export class FtpRouter implements AppRouter {

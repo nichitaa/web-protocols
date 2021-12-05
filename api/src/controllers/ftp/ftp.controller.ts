@@ -20,27 +20,27 @@ export default class FtpController {
     // files
     public list = (req: Request, res: Response, next: NextFunction) => {
         this.ftpClient.list(req, res, next);
-    }
+    };
 
     public download = (req: Request, res: Response, next: NextFunction) => {
         console.log('download');
         this.ftpClient.download(req, res, next);
-    }
+    };
 
     public upload = (req: Request, res: Response, next: NextFunction) => {
         this.ftpClient.upload(req, res, next);
-    }
+    };
 
     public delete = (req: Request, res: Response, next: NextFunction) => {
         this.ftpClient.delete(req, res, next);
-    }
+    };
 
     // directories
     public mkdir = (req: Request, res: Response, next: NextFunction) => {
         this.ftpClient.mkdir(req, res, next);
-    }
+    };
 
     public rmdir = (req: Request, res: Response, next: NextFunction) => {
         this.ftpClient.rmdir(req, res, next);
-    }
+    };
 }
