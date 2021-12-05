@@ -1,6 +1,6 @@
-import {Router} from 'express';
 import {DefaultController} from '../controllers';
-import {AppRouter} from './interfaces';
+import {AppRouter} from '../types';
+import {Router} from 'express';
 
 export class DefaultRouter implements AppRouter {
     private readonly router: Router;
