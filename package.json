@@ -20,6 +20,7 @@
     "ftp-srv": "^4.5.0",
     "http-proxy": "^1.18.1",
     "multer": "^1.4.3",
+    "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15",
     "socket.io": "^4.3.2"
   },
@@ -31,6 +32,7 @@
     "@types/http-proxy": "^1.17.7",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.11.7",
+    "@types/nodemailer": "^6.4.4",
     "@types/nodemon": "^1.19.1",
     "@types/socket.io": "^3.0.2",
     "ts-node": "^10.4.0",
