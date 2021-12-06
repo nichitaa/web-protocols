@@ -1,236 +1,109 @@
-import {FTPMethods, IErrorOptions, ISuccessOptions} from '../types';
-import {SmtpService} from '../../api/src/services/SMTPService';
-import {NextFunction, Request, Response} from 'express';
 import Client from 'ftp';
 import path from 'path';
 import * as fs from 'fs';
+import {FTPMethods, IFtpResponse} from '../types';
 
 
 export default class FTPClient {
     private client: Client;
-    private smtpService: SmtpService;
 
     public constructor(clientOptions: Client.Options) {
         this.client = new Client();
-        this.smtpService = SmtpService.getInstance();
         this.client.connect(clientOptions);
     }
 
-    public successResponse = (opts: ISuccessOptions) => {
-        const {req, res, statusCode, message, data, method, stream} = opts;
-        const response: any = {};
-        if (stream) {
-            res.setHeader('content-type', 'some/type');
-            stream.pipe(res);
-        } else {
-            if (data) {
-                response.data = data;
-            }
-            response.message = message;
-            response.isSuccess = true;
-            res.status(statusCode).json(response);
-        }
-        this.smtpService.sendNotification({
-            isSuccess: true,
-            FTPPath: (req.query.path as string),
-            body: {message, data},
-            method
-        });
-    };
-
-    public errorResponse = (opts: IErrorOptions) => {
-        const {res, req, method, statusCode, errorMessage, invalidQueryParams} = opts;
-        this.smtpService.sendNotification({
-            isSuccess: false,
-            FTPPath: req.query.path ? (req.query.path as string) : 'No query param `path`',
-            method,
-            errorMessage: invalidQueryParams ? 'No query param `path` was provided!' : errorMessage!
-        });
-        res.status(statusCode).json({
-            isSuccess: false,
-            error: invalidQueryParams ? 'please provide the required query params' : errorMessage
-        });
-    };
-
     /**
      * List the content from the specified path on FTP server
-     * @param req
-     * @param res
-     * @param next
+     * @param path
      */
-    public list(req: Request, res: Response, next: NextFunction) {
-        if (req.query.path) {
-            this.client.list((req.query.path as string), (err, list) => {
-                try {
-                    if (err) throw err;
-                    this.successResponse({
-                        req, res, statusCode: 200, data: list,
-                        message: `results of LIST command in directory: ${(req.query.path)}`,
-                        method: FTPMethods.LIST
-                    });
-                } catch (error) {
-                    this.errorResponse({
-                        req, res, statusCode: 500,
-                        method: FTPMethods.LIST,
-                        errorMessage: error.message
-                    });
-                }
+    public list = (path: string | undefined): Promise<IFtpResponse> => {
+        return new Promise((resolve, reject) => {
+            if (!path) reject('No query param `path` was provided!');
+            this.client.list(path!, (err, list) => {
+                if (err) reject({method: FTPMethods.LIST, message: err.message});
+                resolve({
+                    method: FTPMethods.LIST,
+                    data: list,
+                    message: `results of LIST command in directory: ${path}`
+                });
             });
-        } else {
-            this.errorResponse({req, res, method: FTPMethods.LIST, statusCode: 400, invalidQueryParams: true});
-        }
-    }
+        });
+    };
 
     /**
      * Responses with the file stream of the requested FTP server file for a specified path
-     * @param req
-     * @param res
-     * @param next
+     * @param path
      */
-    public download = (req: Request, res: Response, next: NextFunction) => {
-        console.log(`downloading from FTP server path: ${req.query.path}`);
-        if (req.query.path) {
-            this.client.get((req.query.path as string), (err, stream) => {
-                try {
-                    if (err) throw err;
-                    this.successResponse({
-                        req, res, stream, statusCode: 200,
-                        message: `Successfully downloaded file from ${req.query.path}`,
-                        method: FTPMethods.DOWNLOAD
-                    });
-                    res.setHeader('content-type', 'some/type');
-                    stream.pipe(res);
-                } catch (error) {
-                    this.errorResponse({
-                        req, res, statusCode: 500,
-                        method: FTPMethods.DOWNLOAD,
-                        errorMessage: error.message
-                    });
-                }
+    public download = (path: string | undefined): Promise<IFtpResponse> => {
+        return new Promise((resolve, reject) => {
+            if (!path) reject('No query param `path` was provided!');
+            this.client.get((path as string), (err, stream) => {
+                if (err) reject({method: FTPMethods.DOWNLOAD, message: err.message});
+                resolve({stream, method: FTPMethods.DOWNLOAD, message: 'downloaded successful'});
             });
-        } else {
-            this.errorResponse({req, res, method: FTPMethods.DOWNLOAD, statusCode: 400, invalidQueryParams: true});
-        }
+        });
     };
 
     /**
      * Uploads the file from previously saved multer temporary location directly to a specified FTP server path
-     * @param req
-     * @param res
-     * @param next
+     * @param dirPath
+     * @param filename
      */
-    public upload(req: Request, res: Response, next: NextFunction) {
-        // path to temporary multer api storage
-        const tempPath = path.resolve(__dirname, `../temp/${req.file?.originalname}`);
-        if (req.query.path) {
-            this.client.put(fs.createReadStream(tempPath), `${req.query.path}/${req.file!.originalname}`, err => {
-                try {
-                    if (err) throw err;
-                    // delete temporary file as it is already saved on our FTP server
-                    fs.unlinkSync(tempPath);
-                    this.successResponse({
-                        req, res, statusCode: 200,
-                        message: `file: ${req.file?.originalname} successfully uploaded to path: ${req.query.path}/${req.file!.originalname}!`,
-                        method: FTPMethods.UPLOAD
-                    });
-                } catch (error) {
-                    this.errorResponse({
-                        req, res, statusCode: 500,
-                        method: FTPMethods.UPLOAD,
-                        errorMessage: error.message
-                    });
-                }
+    public upload = (dirPath: string | undefined, filename: string): Promise<IFtpResponse> => {
+        return new Promise((resolve, reject) => {
+            if (!dirPath) reject('No query param `path` was provided!');
+            const tempPath = path.resolve(__dirname, `../temp/${filename}`);
+            this.client.put(fs.createReadStream(tempPath), `${dirPath}/${filename}`, err => {
+                if (err) reject({method: FTPMethods.UPLOAD, message: err.message});
+                fs.unlinkSync(tempPath);
+                resolve({
+                    method: FTPMethods.UPLOAD,
+                    message: `file: ${filename} successfully uploaded to path: ${dirPath}/${filename}!`
+                });
             });
-        } else {
-            this.errorResponse({req, res, method: FTPMethods.UPLOAD, statusCode: 400, invalidQueryParams: true});
-        }
-    }
+        });
+    };
 
     /**
      * Deletes a file from the specified path
-     * @param req
-     * @param res
-     * @param next
+     * @param path
      */
-    public delete(req: Request, res: Response, next: NextFunction) {
-        if (req.query.path) {
-            this.client.delete((req.query.path as string), (err) => {
-                try {
-                    if (err) throw err;
-                    this.successResponse({
-                        req, res, statusCode: 200,
-                        message: `file: ${req.params.path} was successfully deleted!`,
-                        method: FTPMethods.DELETE
-                    });
-                } catch (error) {
-                    this.errorResponse({
-                        req, res, statusCode: 500,
-                        method: FTPMethods.DELETE,
-                        errorMessage: error.message
-                    });
-                }
+    public delete = (path: string | undefined): Promise<IFtpResponse> => {
+        return new Promise((resolve, reject) => {
+            if (!path) reject('No query param `path` was provided!');
+            this.client.delete(path!, (err) => {
+                if (err) reject({method: FTPMethods.DELETE, message: err.message});
+                resolve({method: FTPMethods.DELETE, message: `file: ${path} was successfully deleted!`});
             });
-        } else {
-            this.errorResponse({req, res, method: FTPMethods.DELETE, statusCode: 400, invalidQueryParams: true});
-        }
-    }
+        });
+    };
 
     /**
      * Creates a directory
-     * @param req
-     * @param res
-     * @param next
+     * @param path
      */
-    public mkdir(req: Request, res: Response, next: NextFunction) {
-        if (req.query.path) {
-            this.client.mkdir((req.query.path as string), true, (err) => {
-                try {
-                    if (err) throw err;
-                    this.successResponse({
-                        req, res, statusCode: 200,
-                        message: `directory ${req.params.path} was successfully created!`,
-                        method: FTPMethods.MKDIR
-                    });
-                } catch (error) {
-                    this.errorResponse({
-                        req, res, statusCode: 500,
-                        method: FTPMethods.MKDIR,
-                        errorMessage: error.message
-                    });
-                }
+    public mkdir = (path: string | undefined): Promise<IFtpResponse> => {
+        return new Promise((resolve, reject) => {
+            if (!path) reject({method: FTPMethods.MKDIR, message: 'No query param `path` was provided!'});
+            this.client.mkdir(path!, true, (err) => {
+                if (err) reject(err.message);
+                resolve({method: FTPMethods.MKDIR, message: `directory ${path} was successfully created!`});
             });
-        } else {
-            this.errorResponse({req, res, method: FTPMethods.MKDIR, statusCode: 400, invalidQueryParams: true});
-        }
-    }
+        });
+    };
 
     /**
      * Deletes a directory if empty
-     * @param req
-     * @param res
-     * @param next
+     * @param path
      */
-    public rmdir(req: Request, res: Response, next: NextFunction) {
-        if (req.query.path) {
-            this.client.rmdir((req.query.path as string), false, (err) => {
-                try {
-                    if (err) throw err;
-                    this.successResponse({
-                        req, res, statusCode: 200,
-                        message: `directory ${req.params.path} was successfully deleted!`,
-                        method: FTPMethods.RMDIR
-                    });
-                } catch (error) {
-                    this.errorResponse({
-                        req, res, statusCode: 500,
-                        method: FTPMethods.RMDIR,
-                        errorMessage: error.message
-                    });
-                }
+    public rmdir = (path: string | undefined): Promise<IFtpResponse> => {
+        return new Promise((resolve, reject) => {
+            if (!path) reject('No query param `path` was provided!');
+            this.client.rmdir(path!, false, (err) => {
+                if (err) reject({message: err.message, method: FTPMethods.RMDIR});
+                resolve({method: FTPMethods.RMDIR, message: `directory ${path} was successfully deleted!`});
             });
-        } else {
-            this.errorResponse({req, res, method: FTPMethods.RMDIR, statusCode: 400, invalidQueryParams: true});
-        }
-    }
+        });
+    };
 
 }

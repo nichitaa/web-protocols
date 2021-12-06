@@ -16,7 +16,7 @@ Each successful or failed request will notify the user by sending emails with a 
 
 `FTP` server will serve the directory `ftp/srv`. 
 
-`FtpController`, internally uses `FTPClient` commands, that handles all the manipulations
+`FtpController`, internally uses `FTPClient`, that handles "standard" commands (RFC 959)
 
 #### Environment variables
 

@@ -1,5 +1,3 @@
-import {Request, Response} from 'express';
-
 export enum FTPMethods {
     LIST = 'LIST',
     DOWNLOAD = 'DOWNLOAD - GET',
@@ -9,21 +7,9 @@ export enum FTPMethods {
     RMDIR = 'RMDIR'
 }
 
-export interface IErrorOptions {
-    req: Request,
-    res: Response,
-    statusCode: number,
-    method: FTPMethods,
-    errorMessage?: string,
-    invalidQueryParams?: boolean
-}
-
-export interface ISuccessOptions {
-    req: Request,
-    res: Response,
-    statusCode: number,
-    method: FTPMethods,
-    stream?: NodeJS.ReadableStream,
-    message?: string
-    data?: any,
+export interface IFtpResponse {
+    method: FTPMethods;
+    message: string;
+    stream?: NodeJS.ReadableStream;
+    data?: any;
 }
