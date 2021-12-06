@@ -1,9 +1,18 @@
 import {FTPMethods} from '../../../ftp/types';
-import {Router} from 'express';
+import {Request, Response, Router} from 'express';
 
 
 export interface AppRouter {
     Router: Router
+}
+
+export interface IResponseOptions {
+    req: Request;
+    res: Response;
+    method: FTPMethods;
+    stream?: NodeJS.ReadableStream,
+    data?: any[];
+    message?: string;
 }
 
 export interface ISmtpNotificationConf {
